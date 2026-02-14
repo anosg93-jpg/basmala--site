@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مفاجأة لبسمولة</title>
+    <style>
+        body {
+            margin: 0; padding: 0; display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; background-color: #ffc1cf; font-family: 'Segoe UI', Tahoma, sans-serif;
+            overflow-x: hidden; color: #d63384;
+        }
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #ffc1cf; display: flex; justify-content: center; align-items: center; z-index: 100;
+        }
+        .login-box { 
+            background: white; padding: 40px; border-radius: 20px; text-align: center; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 85%; max-width: 350px;
+        }
+        input { 
+            padding: 12px; border: 2px solid #333; border-radius: 10px; width: 100%;
+            text-align: center; margin-bottom: 20px; font-size: 18px; box-sizing: border-box;
+        }
+        .btn-main { 
+            padding: 12px 40px; background: #d63384; color: white; border: none; 
+            border-radius: 10px; cursor: pointer; font-size: 18px; width: 100%;
+        }
+        #main-content {
+            display: none; text-align: center; background: white; padding: 25px;
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 10;
+            max-width: 500px; border: 2px solid #ffb6c1; width: 90%; margin: 20px;
+        }
+        .love-letter { font-size: 1.1rem; line-height: 1.8; color: #444; margin-top: 15px; }
+        .counter-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 20px; }
+        .time-box { background: #fff0f3; padding: 8px; border-radius: 10px; border: 1px solid #ffb6c1; }
+        .time-num { font-size: 1.1rem; font-weight: bold; display: block; color: #d63384; }
+        .time-label { font-size: 0.65rem; color: #888; }
+        .heart { color: #e74c3c; font-size: 45px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        .falling-heart { position: absolute; top: -10%; color: #ffb6c1; animation: fall linear infinite; z-index: 1; pointer-events: none; }
+        @keyframes fall { to { transform: translateY(110vh); } }
+        #music-btn {
+            background: #f8bbd0; color: #d63384; border: 1px solid #d63384;
+            padding: 10px 20px; border-radius: 20px; font-size: 14px; margin: 15px 0; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-box">
+            <h3>اكتبي كلمه السر ي بسمولتي 🤫</h3>
+            <input type="password" id="passwordInput" autocomplete="off">
+            <br>
+            <button class="btn-main" onclick="checkPassword()">دخول</button>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <div class="heart">❤️</div>
+        <div class="love-letter">
+            كل سنه وانتي طيبه يا اجمل بسبوسه في الدنيا كلها وكل رمضان وانتي حبيبتي واختي وبنتي واغلي ماليا وربنا يخليكي ليا وميحرمنيش منك ابدا ابدا ويبارك فيكي ويحميكي من كل سوء ومكروه وربنا يوفقك في دراستك واشوفك اشطر دكتورة في الدنيا كلها وربنا يخلينا لبعض وميحرمناش من بعض أبدا ي نور عيني من جوه وكل رمضان وانتي ب احسن حال وربنا يسعدك ويفرح قلبك ويحميكي ويبارك فيكي يا رب.
+            <br><br>
+            <strong>بحبك يا اجمل بسبوسه في الدنيا كلها 🫶🫂</strong>
+            <br>
+            <button id="music-btn" onclick="toggleMusic()">تشغيل الأغنية 🎵</button>
+        </div>
+
+        <div class="counter-container">
+            <div class="time-box"><span class="time-num" id="days">0</span><span class="time-label">يوم</span></div>
+            <div class="time-box"><span class="time-num" id="hours">0</span><span class="time-label">ساعة</span></div>
+            <div class="time-box"><span class="time-num" id="minutes">0</span><span class="time-label">دقيقة</span></div>
+            <div class="time-box"><span class="time-num" id="seconds">0</span><span class="time-label">ثانية</span></div>
+        </div>
+    </div>
+
+    <audio id="bgMusic" loop preload="auto">
+        <source src="tamally.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const startDate = new Date("December 14, 2022 00:00:00").getTime();
+        const music = document.getElementById('bgMusic');
+
+        function updateCounter() {
+            const now = new Date().getTime();
+            const diff = now - startDate;
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            document.getElementById("days").innerText = d;
+            document.getElementById("hours").innerText = h;
+            document.getElementById("minutes").innerText = m;
+            document.getElementById("seconds").innerText = s;
+        }
+
+        function checkPassword() {
+            const pass = document.getElementById('passwordInput').value;
+            if (pass === "selem") {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                
+                // محاولة التشغيل التلقائي
+                music.play().catch(e => console.log("تحتاج ضغط زر التشغيل"));
+                
+                setInterval(updateCounter, 1000);
+                setInterval(createHeart, 300);
+            } else {
+                alert("كلمة السر غلط يا بسمولتي!");
+            }
+        }
+
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                document.getElementById('music-btn').innerText = "إيقاف الأغنية ⏸️";
+            } else {
+                music.pause();
+                document.getElementById('music-btn').innerText = "تشغيل الأغنية 🎵";
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('falling-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+    </script>
+</body>
+</html>
