@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مفاجأة لبسمولة</title>
+    <style>
+        :root {
+            --primary-pink: #ff85a1;
+            --dark-pink: #d63384;
+            --night-blue: #1a2a6c;
+        }
+        body {
+            margin: 0; padding: 0; display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; background: linear-gradient(135deg, #ffc1cf 0%, #ffebf1 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden; color: var(--dark-pink); transition: background 1.5s ease;
+        }
+        
+        .box { 
+            background: rgba(255, 255, 255, 0.95); padding: 30px; border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1); text-align: center;
+            max-width: 450px; width: 90%; z-index: 10; position: relative;
+        }
+        
+        #login-screen { position: fixed; inset: 0; background: #ffc1cf; display: flex; justify-content: center; align-items: center; z-index: 100; transition: opacity 0.5s; }
+        
+        input, textarea { 
+            padding: 12px; border: 2px solid var(--primary-pink); border-radius: 15px; width: 100%;
+            text-align: center; margin-bottom: 20px; font-size: 18px; outline: none; box-sizing: border-box;
+        }
+        .btn-main, .action-btn { 
+            padding: 12px 30px; background: var(--dark-pink); color: white; border: none; 
+            border-radius: 25px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; margin: 10px 0;
+            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3);
+        }
+        .btn-main:hover, .action-btn:hover { transform: scale(1.05); }
+
+        .image-container { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
+        .love-img { 
+            width: 130px; height: 130px; object-fit: cover; border-radius: 20px; border: 3px solid white; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1); animation: float 3s infinite ease-in-out; 
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .love-letter { font-size: 1.1rem; line-height: 1.8; color: #444; margin-bottom: 20px; font-weight: 500; }
+        .counter-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
+        .time-box { background: white; padding: 10px 5px; border-radius: 15px; border-bottom: 3px solid var(--primary-pink); }
+        .time-num { font-size: 1rem; font-weight: bold; display: block; }
+
+        #main-content, #letter-section, #wish-section, #ramadan-screen { display: none; }
+
+        /* === تحسين لون رمضان ليكون واضحاً جداً === */
+        .ramadan-text {
+            font-size: 2.3rem; margin-top: 20px; font-weight: 900; line-height: 1.5;
+            /* استخدام لون ذهبي غامق وواضح */
+            color: #b8860b; 
+            /* إضافة ظل خارجي تقيل (Glow) عشان الكلام يبرز */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2), 0 0 15px rgba(184, 134, 11, 0.3);
+            animation: textEmphasis 2s infinite alternate;
+        }
+        @keyframes textEmphasis { 
+            from { transform: scale(1); } 
+            to { transform: scale(1.03); } 
+        }
+        
+        .moon-icon { font-size: 75px; display: block; margin-bottom: 10px; filter: drop-shadow(0 0 10px rgba(0,0,0,0.1)); }
+
+        .falling-item { position: absolute; top: -10%; pointer-events: none; z-index: 1; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+        #wish-confirmation { display: none; margin-top: 20px; }
+        .confirm-msg { font-size: 1.3
