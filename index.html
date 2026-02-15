@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مفاجأة لبسمولة</title>
+    <style>
+        :root {
+            --primary-pink: #ff85a1;
+            --dark-pink: #d63384;
+            --soft-pink: #fff0f3;
+        }
+        body {
+            margin: 0; padding: 0; display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; background: linear-gradient(135deg, #ffc1cf 0%, #ffebf1 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden; color: var(--dark-pink);
+        }
+        
+        /* شاشة الدخول */
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffc1cf; display: flex; justify-content: center; align-items: center; z-index: 100;
+        }
+        .login-box { 
+            background: rgba(255, 255, 255, 0.9); padding: 40px; border-radius: 30px; text-align: center; 
+            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.2); width: 85%; max-width: 350px;
+            border: 2px solid white;
+        }
+        input { 
+            padding: 12px; border: 2px solid var(--primary-pink); border-radius: 15px; width: 100%;
+            text-align: center; margin-bottom: 20px; font-size: 18px; outline: none;
+        }
+        
+        .btn-main { 
+            padding: 12px 40px; background: var(--dark-pink); color: white; border: none; 
+            border-radius: 15px; cursor: pointer; font-size: 18px; width: 100%;
+        }
+
+        /* المحتوى الرئيسي */
+        #main-content {
+            display: none; text-align: center; background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px); padding: 25px; border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1); z-index: 10;
+            max-width: 500px; border: 2px solid white; width: 92%; margin: 20px;
+        }
+
+        /* قسم الصور */
+        #images-section { display: block; }
+        .image-container { display: flex; justify-content: center; gap: 15px; margin: 25px 0; flex-wrap: wrap; }
+        .love-img {
+            width: 140px; height: 140px; object-fit: cover;
+            border-radius: 25px; border: 3px solid white;
+            box-shadow: 0 8px 20px rgba(214, 51, 132, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* قسم الرسالة */
+        #letter-section { display: none; }
+        .love-letter { font-size: 1.15rem; line-height: 1.8; color: #444; margin: 20px 0; font-weight: 500; }
+
+        .counter-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 25px; }
+        .time-box { background: white; padding: 10px 5px; border-radius: 15px; border-bottom: 3px solid var(--primary-pink); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .time-num { font-size: 1.1rem; font-weight: bold; display: block; color: var(--dark-pink); }
+        .time-label { font-size: 0.65rem; color: #888; }
+
+        .heart { font-size: 50px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+        .falling-heart { position: absolute; top: -10%; pointer-events: none; z-index: 1; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+        .action-btn {
+            background: var(--dark-pink); color: white; border: none;
+            padding: 15px 30px; border-radius: 30px; font-size: 18px; cursor: pointer;
+            font-weight: bold; transition: 0.3s; margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3);
+        }
+        .action-btn:hover { background: var(--primary-pink); transform: scale(1.05); }
+
+        #music-btn {
+            background: white; color: var(--dark-pink); border: 2px solid var(--primary-pink);
+            padding: 8px 15px; border-radius: 20px; font-size: 13px; margin: 15px 5px; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-box">
+            <div style="font-size: 45px; margin-bottom: 10px;">🌸</div>
+            <h3>اكتبي كلمه السر يا بسمولتي 🤫</h3>
+            <input type="password" id="passwordInput" placeholder="كلمة السر..." autocomplete="off">
+            <br>
+            <button class="btn-main" onclick="checkPassword()">دخول ✨</button>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <div class="heart">❤️</div>
+        
+        <div id="images-section">
+            <div class="image-container">
+                <img src="love1.jpg" alt="Love 1" class="love-img">
+                <img src="love2.jpg" alt="Love 2" class="love-img">
+            </div>
+            <button class="action-btn" onclick="showLetter()">اضغطي هنا ي بسبوسه 💌</button>
+        </div>
+
+        <div id="letter-section">
+            <div id="typewriter" class="love-letter"></div>
+            
+            <div class="counter-container">
+                <div class="time-box"><span class="time-num" id="days">0</span><span class="time-label">يوم</span></div>
+                <div class="time-box"><span class="time-num" id="hours">0</span><span class="time-label">ساعة</span></div>
+                <div class="time-box"><span class="time-num" id="minutes">0</span><span class="time-label">دقيقة</span></div>
+                <div class="time-box"><span class="time-num" id="seconds">0</span><span class="time-label">ثانية</span></div>
+            </div>
+
+            <div style="margin-top: 10px;">
+                <button id="music-btn" onclick="toggleMusic()">تشغيل الأغنية 🎵</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bgMusic" loop preload="auto">
+        <source src="tamally.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const startDate = new Date("December 14, 2022 00:00:00").getTime();
+        const music = document.getElementById('bgMusic');
+        const text = "كل سنه وانتي طيبه يا اجمل بسبوسه في الدنيا كلها، وكل رمضان وانتي حبيبتي واختي وبنتي واغلي ماليا.. ربنا يخليكي ليا وميحرمنيش منك ابدا ابدا ويبارك فيكي ويحميكي من كل سوء ومكروه.. اشوفك اشطر دكتورة في الدنيا كلها يارب. ربنا يخلينا لبعض وميحرمناش من بعض أبدا يا نور عيني من جوه.. بحبك يا اجمل بسبوسه في الدنيا! 🫶🫂";
+        
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50);
+            }
+        }
+
+        function updateCounter() {
+            const now = new Date().getTime();
+            const diff = now - startDate;
+            document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000);
+        }
+
+        function checkPassword() {
+            const pass = document.getElementById('passwordInput').value;
+            if (pass === "selem") {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                music.play().catch(() => {});
+                setInterval(createHeart, 400);
+            } else {
+                alert("كلمة السر غلط يا بسمولتي! 🧐");
+            }
+        }
+
+        function showLetter() {
+            document.getElementById('images-section').style.display = 'none';
+            document.getElementById('letter-section').style.display = 'block';
+            typeWriter();
+            setInterval(updateCounter, 1000);
+        }
+
+        function toggleMusic() {
+            if (music.paused) { music.play(); document.getElementById('music-btn').innerText = "إيقاف الأغنية ⏸️"; }
+            else { music.pause(); document.getElementById('music-btn').innerText = "تشغيل الأغنية 🎵"; }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('falling-heart');
+            const hearts = ['❤️', '💖', '✨', '🌸', '💕'];
+            heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }
+    </script>
+</body>
+</html>
