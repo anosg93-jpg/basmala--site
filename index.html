@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مفاجأة لبسمولة</title>
+    <style>
+        :root {
+            --primary-pink: #ff85a1;
+            --dark-pink: #d63384;
+            --soft-pink: #fff0f3;
+        }
+        body {
+            margin: 0; padding: 0; display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; background: linear-gradient(135deg, #ffc1cf 0%, #ffebf1 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden; color: var(--dark-pink);
+        }
+        
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffc1cf; display: flex; justify-content: center; align-items: center; z-index: 100;
+        }
+        .login-box { 
+            background: rgba(255, 255, 255, 0.9); padding: 40px; border-radius: 30px; text-align: center; 
+            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.2); width: 85%; max-width: 350px; border: 2px solid white;
+        }
+        input, textarea { 
+            padding: 12px; border: 2px solid var(--primary-pink); border-radius: 15px; width: 100%;
+            text-align: center; margin-bottom: 20px; font-size: 18px; outline: none; box-sizing: border-box;
+        }
+        
+        .btn-main, .action-btn { 
+            padding: 12px 30px; background: var(--dark-pink); color: white; border: none; 
+            border-radius: 25px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s;
+        }
+
+        #main-content {
+            display: none; text-align: center; background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px); padding: 25px; border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1); z-index: 10;
+            max-width: 500px; border: 2px solid white; width: 92%; margin: 20px;
+        }
+
+        .image-container { display: flex; justify-content: center; gap: 15px; margin: 25px 0; flex-wrap: wrap; }
+        .love-img {
+            width: 140px; height: 140px; object-fit: cover; border-radius: 25px; border: 3px solid white;
+            box-shadow: 0 8px 20px rgba(214, 51, 132, 0.3); animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        #letter-section, #wish-section { display: none; }
+        .love-letter { font-size: 1.15rem; line-height: 1.8; color: #444; margin: 20px 0; }
+
+        .counter-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 25px; }
+        .time-box { background: white; padding: 10px 5px; border-radius: 15px; border-bottom: 3px solid var(--primary-pink); }
+        .time-num { font-size: 1.1rem; font-weight: bold; display: block; color: var(--dark-pink); }
+        .time-label { font-size: 0.65rem; color: #888; }
+
+        .heart { font-size: 50px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+        .falling-heart { position: absolute; top: -10%; pointer-events: none; z-index: 1; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+        #wish-box {
+            background: #fff0f3; padding: 20px; border-radius: 20px; border: 2px dashed var(--primary-pink); margin-top: 20px;
+        }
+        textarea { height: 100px; resize: none; font-size: 16px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-box">
+            <div style="font-size: 45px; margin-bottom: 10px;">🌸</div>
+            <h3>اكتبي كلمه السر يا بسمولتي 🤫</h3>
+            <input type="password" id="passwordInput" placeholder="كلمة السر..." autocomplete="off">
+            <br>
+            <button class="btn-main" onclick="checkPassword()">دخول ✨</button>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <div class="heart">❤️</div>
+        
+        <div id="images-section">
+            <div class="image-container">
+                <img src="love1.jpg" alt="Love 1" class="love-img">
+                <img src="love2.jpg" alt="Love 2" class="love-img">
+            </div>
+            <button class="action-btn" onclick="showLetter()">اضغطي هنا ي بسبوسه 💌</button>
+        </div>
+
+        <div id="letter-section">
+            <div id="typewriter" class="love-letter"></div>
+            
+            <div class="counter-container">
+                <div class="time-box"><span class="time-num" id="days">0</span><span class="time-label">يوم</span></div>
+                <div class="time-box"><span class="time-num" id="hours">0</span><span class="time-label">ساعة</span></div>
+                <div class="time-box"><span class="time-num" id="minutes">0</span><span class="time-label">دقيقة</span></div>
+                <div class="time-box"><span class="time-num" id="seconds">0</span><span class="time-label">ثانية</span></div>
+            </div>
+
+            <button id="wish-btn" class="action-btn" style="display:none; margin-top: 30px; font-size: 15px;" onclick="showWishSection()">اضغطي هنا اجمل بسمولة في الدنيا ✨</button>
+            
+            <div style="margin-top: 15px;">
+                <button id="music-btn" onclick="toggleMusic()" style="background:none; border:none; color:var(--dark-pink); cursor:pointer; font-size:12px;">🎵 تشغيل/إيقاف</button>
+            </div>
+        </div>
+
+        <div id="wish-section">
+            <div id="wish-box">
+                <h3 style="margin-top:0;">اتمني امنيه يا حبيبتي 🌙</h3>
+                <p style="font-size: 13px; color: #888;">احنا داخلين على رمضان، اكتبي اللي في قلبك ومحدش هيشوفه غيرك.. ربنا يحققلك كل اللي بتتمنيه.</p>
+                <textarea id="wishText" placeholder="اكتبي أمنيتك هنا..."></textarea>
+                <button class="action-btn" onclick="sendWish()">إرسال أمنيتي للسماء ✨</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bgMusic" loop preload="auto">
+        <source src="tamally.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const startDate = new Date("December 14, 2022 00:00:00").getTime();
+        const music = document.getElementById('bgMusic');
+        const text = "كل سنه وانتي طيبه يا اجمل بسبوسه في الدنيا كلها، وكل رمضان وانتي حبيبتي واختي وبنتي واغلي ماليا.. ربنا يخليكي ليا وميحرمنيش منك ابدا ابدا ويبارك فيكي ويحميكي من كل سوء ومكروه.. اشوفك اشطر دكتورة في الدنيا كلها يارب. ربنا يخلينا لبعض وميحرمناش من بعض أبدا يا نور عيني من جوه.. بحبك يا اجمل بسبوسه في الدنيا! 🫶🫂";
+        
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50);
+            } else {
+                // لما الرسالة تخلص يظهر زرار الأمنية
+                document.getElementById('wish-btn').style.display = 'inline-block';
+            }
+        }
+
+        function updateCounter() {
+            const now = new Date().getTime();
+            const diff = now - startDate;
+            document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000);
+        }
+
+        function checkPassword() {
+            const pass = document.getElementById('passwordInput').value;
+            if (pass === "selem") {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                music.play().catch(() => {});
+                setInterval(createHeart, 400);
+            } else {
+                alert("كلمة السر غلط يا بسمولتي! 🧐");
+            }
+        }
+
+        function showLetter() {
+            document.getElementById('images-section').style.display = 'none';
+            document.getElementById('letter-section').style.display = 'block';
+            typeWriter();
+            setInterval(updateCounter, 1000);
+        }
+
+        function showWishSection() {
+            document.getElementById('letter-section').style.display = 'none';
+            document.getElementById('wish-section').style.display = 'block';
+        }
+
+        function sendWish() {
+            const wish = document.getElementById('wishText').value;
+            if(wish.trim() === "") {
+                alert("اكتبي أي حاجة يا بسبوسة الأول ❤️");
+                return;
+            }
+            document.getElementById('wish-box').innerHTML = "<h3>إن شاء الله ربنا يتقبل منك يا روحي.. وكل رمضان وانتي محققة كل اللي بتتمنيه ❤️🌙</h3>";
+            for(let j=0; j<20; j++) setTimeout(createHeart, j*100);
+        }
+
+        function toggleMusic() {
+            if (music.paused) { music.play(); }
+            else { music.pause(); }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('falling-heart');
+            const hearts = ['❤️', '💖', '✨', '🌸', '💕'];
+            heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }
+    </script>
+</body>
+</html>
